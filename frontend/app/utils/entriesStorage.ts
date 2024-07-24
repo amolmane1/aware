@@ -7,17 +7,29 @@ class EntriesStorage {
   async getAllEntries(): Promise<Entry[]> {
     try {
       const entries = await AsyncStorage.getItem(this.storageKey);
-      return entries ? JSON.parse(entries) : [];
+      if (entries) {
+        const parsedEntries: Entry[] = JSON.parse(entries);
+        parsedEntries.forEach((entry) => {
+          entry.datetime = new Date(entry.datetime);
+        });
+        return parsedEntries;
+      } else {
+        return [];
+      }
     } catch (error) {
       console.error("Error retrieving entries:", error);
       return [];
     }
   }
 
-  async addEntry(entry: Entry): Promise<void> {
+  async addEntry(entry: Omit<Entry, "id">): Promise<void> {
     try {
       const entries = await this.getAllEntries();
-      entries.push(entry);
+      const newEntry: Entry = {
+        ...entry,
+        id: (entries.length + 1).toString(),
+      };
+      entries.push(newEntry);
       await AsyncStorage.setItem(this.storageKey, JSON.stringify(entries));
     } catch (error) {
       console.error("Error adding entry:", error);
