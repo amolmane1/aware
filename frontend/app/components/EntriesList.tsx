@@ -1,30 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FlatList, View, Text } from "react-native";
+import { FlatList, View, Text, StyleSheet } from "react-native";
 import EntryCard from "./EntryCard";
 import { Entry } from "../utils/types";
 import EntriesStorageContext from "../contexts/entriesStorageContext";
 import { useNavigate } from "react-router-native";
 
-// const entries: Entry[] = [
-//   {
-//     id: "1",
-//     datetime: new Date("2024-10-07T17:00:00Z"),
-//     type: "insight",
-//     text: "First entry",
-//   },
-//   {
-//     id: "2",
-//     datetime: new Date("2024-10-08T18:00:00Z"),
-//     type: "meditation",
-//     text: "Second entry",
-//   },
-//   {
-//     id: "3",
-//     datetime: new Date("2024-10-09T19:00:00Z"),
-//     type: "question",
-//     text: "Third entry",
-//   },
-// ];
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  list: {
+    flexGrow: 1,
+  },
+});
 
 const EntriesList = () => {
   const entriesStorage = useContext(EntriesStorageContext);
@@ -48,7 +36,7 @@ const EntriesList = () => {
   }, []);
 
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
         data={entries}
         renderItem={({ item }: { item: Entry }) => <EntryCard entry={item} />}

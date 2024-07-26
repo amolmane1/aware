@@ -1,9 +1,20 @@
 import React, { useContext } from "react";
 import { View } from "react-native";
 import { useFormik } from "formik";
-import { TextInput, RadioButton, Button } from "react-native-paper";
+import { TextInput, Button } from "react-native-paper";
+import { Picker } from "@react-native-picker/picker"; // Updated import
 import EntriesStorageContext from "../contexts/entriesStorageContext";
 import { useNavigate } from "react-router-native";
+import { SelectList } from "react-native-dropdown-select-list";
+import Timer from "./Timer";
+import MeditationTimer from "./MeditationTimer";
+
+const dropdownOptions = [
+  { key: "1", value: "Musing" },
+  { key: "2", value: "Meditation" },
+  { key: "3", value: "Question" },
+  { key: "4", value: "Insight" },
+];
 
 const CreateEntry = () => {
   const entriesStorage = useContext(EntriesStorageContext);
@@ -35,21 +46,21 @@ const CreateEntry = () => {
 
   return (
     <View>
-      <RadioButton.Group
-        onValueChange={formik.handleChange("type")}
-        value={formik.values.type}
-      >
-        <RadioButton.Item label="Meditation" value="meditation" />
-        <RadioButton.Item label="Insight" value="insight" />
-        <RadioButton.Item label="Question" value="question" />
-        <RadioButton.Item label="Musing" value="musing" />
-      </RadioButton.Group>
+      <SelectList
+        setSelected={(val: string) => {
+          formik.setFieldValue("type", val);
+          console.log(formik.values.type);
+        }}
+        data={dropdownOptions}
+        save="value"
+      />
       <TextInput
         label="Text"
         value={formik.values.text}
         onChangeText={formik.handleChange("text")}
       />
       <Button onPress={() => formik.handleSubmit()}>Submit</Button>
+      {formik.values.type === "Meditation" && <MeditationTimer />}
     </View>
   );
 };
