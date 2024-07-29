@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Entry } from "./types";
+import { BasicEntry, Entry, EntryWithoutId, MeditationEntry } from "./types";
 
 class EntriesStorage {
   private storageKey = "entries";
@@ -22,14 +22,24 @@ class EntriesStorage {
     }
   }
 
-  async addEntry(entry: Omit<Entry, "id">): Promise<void> {
+  async addEntry(entry: EntryWithoutId): Promise<void> {
     try {
       const entries = await this.getAllEntries();
-      const newEntry: Entry = {
-        ...entry,
-        id: (entries.length + 1).toString(),
-      };
-      entries.push(newEntry);
+      const id = (entries.length + 1).toString();
+      if (entry.type === "Meditation") {
+        const newEntry: MeditationEntry = {
+          ...entry,
+          id,
+        };
+        entries.push(newEntry);
+      } else {
+        const newEntry: BasicEntry = {
+          ...entry,
+          id,
+        };
+        entries.push(newEntry);
+      }
+
       await AsyncStorage.setItem(this.storageKey, JSON.stringify(entries));
     } catch (error) {
       console.error("Error adding entry:", error);

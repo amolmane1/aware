@@ -1,11 +1,7 @@
 import * as React from "react";
 import { Modal, Portal, Text, Button, Card } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
-
-interface ChooseEntryTypeModalProps {
-  visible: boolean;
-  hideModal: () => void;
-}
+import { Link } from "react-router-native";
 
 const styles = StyleSheet.create({
   containerStyle: {
@@ -30,37 +26,36 @@ const styles = StyleSheet.create({
   },
 });
 
-const ChooseEntryTypeModal: React.FC<ChooseEntryTypeModalProps> = ({
-  visible,
-  hideModal,
-}) => {
+const ChooseEntryType = () => {
   return (
-    <Portal>
-      <Modal
-        visible={visible}
-        onDismiss={hideModal}
-        contentContainerStyle={styles.containerStyle}
-      >
-        <Card>
-          <Card.Content>
-            <View style={styles.cardHeaderAndButtonsContainer}>
-              <View style={styles.cardHeaderContainer}>
-                <Text variant="titleLarge">Add new entry</Text>
-                <Text variant="bodyLarge">Select entry type</Text>
-              </View>
-
-              <View style={styles.buttonContainer}>
-                <Button mode="outlined">Meditation</Button>
-                <Button mode="outlined">Musing</Button>
-                <Button mode="outlined">Question</Button>
-                <Button mode="outlined">Insight</Button>
-              </View>
+    <View style={styles.containerStyle}>
+      <Card>
+        <Card.Content>
+          <View style={styles.cardHeaderAndButtonsContainer}>
+            <View style={styles.cardHeaderContainer}>
+              <Text variant="titleLarge">Add new entry</Text>
+              <Text variant="bodyLarge">Select entry type</Text>
             </View>
-          </Card.Content>
-        </Card>
-      </Modal>
-    </Portal>
+
+            <View style={styles.buttonContainer}>
+              <Link to="/add-entry/meditation">
+                <Button mode="outlined">Meditation</Button>
+              </Link>
+              <Link to="/add-entry/musing">
+                <Button mode="outlined">Musing</Button>
+              </Link>
+              <Link to="/add-entry/question">
+                <Button mode="outlined">Question</Button>
+              </Link>
+              <Link to="/add-entry/insight">
+                <Button mode="outlined">Insight</Button>
+              </Link>
+            </View>
+          </View>
+        </Card.Content>
+      </Card>
+    </View>
   );
 };
 
-export default ChooseEntryTypeModal;
+export default ChooseEntryType;
