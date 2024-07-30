@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Modal, Portal, Text, Button, Card } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
-import { Link } from "react-router-native";
 
 const styles = StyleSheet.create({
   containerStyle: {
@@ -26,7 +25,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const ChooseEntryType = () => {
+import { NavigationProp } from "@react-navigation/native";
+
+const ChooseEntryType = ({
+  navigation,
+}: {
+  navigation: NavigationProp<any>;
+}) => {
   return (
     <View style={styles.containerStyle}>
       <Card>
@@ -38,18 +43,30 @@ const ChooseEntryType = () => {
             </View>
 
             <View style={styles.buttonContainer}>
-              <Link to="/add-entry/meditation">
-                <Button mode="outlined">Meditation</Button>
-              </Link>
-              <Link to="/add-entry/musing">
-                <Button mode="outlined">Musing</Button>
-              </Link>
-              <Link to="/add-entry/question">
-                <Button mode="outlined">Question</Button>
-              </Link>
-              <Link to="/add-entry/insight">
-                <Button mode="outlined">Insight</Button>
-              </Link>
+              <Button
+                mode="outlined"
+                onPress={() => navigation.navigate("Set Meditation Duration")}
+              >
+                Meditation
+              </Button>
+              <Button
+                mode="outlined"
+                onPress={() => navigation.navigate("Add Musing")}
+              >
+                Musing
+              </Button>
+              <Button
+                mode="outlined"
+                onPress={() => navigation.navigate("Add Question")}
+              >
+                Question
+              </Button>
+              <Button
+                mode="outlined"
+                onPress={() => navigation.navigate("Add Insight")}
+              >
+                Insight
+              </Button>
             </View>
           </View>
         </Card.Content>

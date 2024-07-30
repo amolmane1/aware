@@ -1,14 +1,15 @@
 import React, { useState, useContext } from "react";
 import { TextInput, Button, Text } from "react-native-paper";
 import EntriesStorageContext from "../contexts/entriesStorageContext";
-import { useLocation, useNavigate } from "react-router-native";
 import { formatTime } from "../utils/helper_functions";
-import { EntryWithoutId, MeditationEntryWithoutId } from "../utils/types";
+import {
+  AddMeditationProps,
+  EntryWithoutId,
+  MeditationEntryWithoutId,
+} from "../utils/types";
 
-const AddMeditationEntry = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { elapsedTime } = location.state;
+const AddMeditationEntry = ({ route, navigation }: AddMeditationProps) => {
+  const { elapsedTime } = route.params;
   const [entryText, setEntryText] = useState("");
 
   const entriesStorage = useContext(EntriesStorageContext);
@@ -24,7 +25,7 @@ const AddMeditationEntry = () => {
       };
       await entriesStorage.addEntry(newEntry);
       console.log("Entry saved successfully!");
-      navigate("/");
+      navigation.navigate("Home");
     } catch (error) {
       console.error("Error saving entry:", error);
     }

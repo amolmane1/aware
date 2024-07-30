@@ -2,10 +2,15 @@ import React, { useState } from "react";
 import { View, Button } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { Text } from "react-native-paper";
-import { useNavigate } from "react-router-native";
+import { NavigationProp } from "@react-navigation/native";
 
-const SetMeditationDuration: React.FC = () => {
-  const navigate = useNavigate();
+interface SetMeditationDurationProps {
+  navigation: NavigationProp<any>;
+}
+
+const SetMeditationDuration: React.FC<SetMeditationDurationProps> = ({
+  navigation,
+}) => {
   const [durationMinutes, setDurationMinutes] = useState(30);
 
   const handleDurationChange = (value: number) => {
@@ -13,8 +18,8 @@ const SetMeditationDuration: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    navigate(`/add-entry/meditation/meditation-timer`, {
-      state: { duration: durationMinutes * 60 },
+    navigation.navigate("Meditation Timer", {
+      duration: durationMinutes * 60,
     });
   };
 

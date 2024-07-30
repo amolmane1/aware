@@ -4,6 +4,7 @@ import EntryCard from "./EntryCard";
 import { Entry } from "../utils/types";
 import EntriesStorageContext from "../contexts/entriesStorageContext";
 import { useNavigate } from "react-router-native";
+import { useFocusEffect } from "@react-navigation/native";
 
 const styles = StyleSheet.create({
   container: {
@@ -19,21 +20,23 @@ const EntriesList = () => {
   const navigate = useNavigate();
   const [entries, setEntries] = useState<Entry[]>([]);
 
-  useEffect(() => {
-    const fetchEntries = async () => {
-      try {
-        const fetchedEntries = await entriesStorage.getAllEntries();
-        const sortedEntries = fetchedEntries.sort(
-          (a, b) => b.datetime.getTime() - a.datetime.getTime()
-        );
-        setEntries(sortedEntries);
-      } catch (error) {
-        console.error("Error fetching entries:", error);
-      }
-    };
+  const fetchEntries = async () => {
+    try {
+      const fetchedEntries = await entriesStorage.getAllEntries();
+      const sortedEntries = fetchedEntries.sort(
+        (a, b) => b.datetime.getTime() - a.datetime.getTime()
+      );
+      setEntries(sortedEntries);
+    } catch (error) {
+      console.error("Error fetching entries:", error);
+    }
+  };
 
-    fetchEntries();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchEntries();
+    }, [])
+  );
 
   return (
     <View style={styles.container}>

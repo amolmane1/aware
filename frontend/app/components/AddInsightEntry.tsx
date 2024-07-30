@@ -3,9 +3,13 @@ import { TextInput, Button } from "react-native-paper";
 import EntriesStorageContext from "../contexts/entriesStorageContext";
 import { useNavigate } from "react-router-native";
 import { BasicEntryWithoutId } from "../utils/types";
+import { NavigationProp } from "@react-navigation/native";
 
-const AddInsightEntry = () => {
-  const navigate = useNavigate();
+const AddInsightEntry = ({
+  navigation,
+}: {
+  navigation: NavigationProp<any>;
+}) => {
   const [entryText, setEntryText] = useState("");
 
   const entriesStorage = useContext(EntriesStorageContext);
@@ -19,7 +23,7 @@ const AddInsightEntry = () => {
       };
       await entriesStorage.addEntry(newEntry);
       console.log("Entry saved successfully!");
-      navigate("/");
+      navigation.navigate("Home");
     } catch (error) {
       console.error("Error saving entry:", error);
     }

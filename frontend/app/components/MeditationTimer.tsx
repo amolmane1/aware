@@ -2,26 +2,24 @@ import * as React from "react";
 import { Text, View, StyleSheet, Button } from "react-native";
 import Constants from "expo-constants";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
-import { useLocation, useNavigate } from "react-router-native";
 import { formatTime } from "../utils/helper_functions";
+import { TimerProps } from "../utils/types";
 
-const MeditationTimer = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { duration } = location.state;
+const MeditationTimer = ({ route, navigation }: TimerProps) => {
+  const { duration } = route.params;
   const [elapsedTime, setElapsedTime] = React.useState(0);
   const [isPlaying, setIsPlaying] = React.useState(true);
   const [isFinished, setIsFinished] = React.useState(false);
 
   const handleDiscard = () => {
     setIsPlaying(false);
-    navigate("/");
+    navigation.navigate("Home");
   };
 
   const handleFinish = () => {
     setIsPlaying(false);
-    navigate("/add-entry/meditation/add-notes", {
-      state: { elapsedTime: elapsedTime },
+    navigation.navigate("Add Meditation", {
+      elapsedTime: elapsedTime,
     });
   };
 
